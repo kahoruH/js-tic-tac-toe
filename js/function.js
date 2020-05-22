@@ -1,3 +1,4 @@
+
 const Cells = document.querySelectorAll('[data-key]')
 const Message = document.getElementById('js-message')
 
