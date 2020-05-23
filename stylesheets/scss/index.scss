@@ -66,6 +66,11 @@
                 content: '×';
                 font-size: 36px;
               }
+
+              &.nonStyle:hover {
+                background: #fff;
+                cursor: default;
+              }
             }
           }
         }

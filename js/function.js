@@ -1,8 +1,8 @@
 
-const Cells = document.querySelectorAll('[data-key]')
-const Message = document.getElementById('js-message')
+const CELLS = document.querySelectorAll('[data-key]')
+const MESSAGE = document.getElementById('js-message')
 
-const WinningPattern = [
+const WINNING_PATTERN = [
   [0, 1, 2],
   [3, 4, 5],
   [6, 7, 8],
@@ -14,8 +14,8 @@ const WinningPattern = [
 ]
 
 //class
-const Cross = 'cross'
-const Circle = 'circle'
+const CROSS = 'cross'
+const CIRCLE = 'circle'
 
 
 //先行はCircle
@@ -27,48 +27,55 @@ startGame()
 
 
 //Restart
-const RestartBtn = document.getElementById('js-restart')
-RestartBtn.addEventListener('click', startGame)
+const RESTART_BTN = document.getElementById('js-restart')
+RESTART_BTN.addEventListener('click', startGame)
 
 
 //ボード頭上のナビ
-const BarCircle = document.querySelector('.circle');
-const BarCross = document.querySelector('.cross');
+const BAR_CIRCLE = document.querySelector('.circle');
+const BAR_CROSS = document.querySelector('.cross');
 
 function chengeTurns() {
   CircleTurn = !CircleTurn;
   Turn++;
 
   if(Turn % 2 == 0) {
-    BarCross.classList.remove('active')
-    BarCircle.classList.add('active')
+    BAR_CROSS.classList.remove('active')
+    BAR_CIRCLE.classList.add('active')
     
   } else {
-    BarCross.classList.add('active')
-    BarCircle.classList.remove('active')
+    BAR_CROSS.classList.add('active')
+    BAR_CIRCLE.classList.remove('active')
   }
 }
 
 //セルに付けるマーク
-function putMark(Cell, CurrentClass) {
-  Cell.classList.add(CurrentClass)
+function putMark(CELL, CURRENT_CLASS) {
+  CELL.classList.add(CURRENT_CLASS)
+  CELL.classList.remove('nonStyle')
 }
 
 
 function startGame() {
-  Cells.forEach(Cell => {
-    Cell.classList.remove(Cross)
-    Cell.classList.remove(Circle)
-    Cell.removeEventListener('click', handleClick)
-    Cell.addEventListener('click', handleClick, { once: true })
+
+  MESSAGE.classList.remove('result')
+  MESSAGE.innerText = 'starting...'
+
+
+
+  CELLS.forEach(CELL => {
+    CELL.classList.remove(CROSS)
+    CELL.classList.remove(CIRCLE)
+    CELL.removeEventListener('click', handleClick)
+    CELL.addEventListener('click', handleClick, { once: true })
   })
 }
 
 function handleClick(e) {
-  const Cell = e.target
-  const CurrentClass = CircleTurn ? Circle : Cross
-  putMark(Cell, CurrentClass)
-  if (checkWinner(CurrentClass)) {
+  const CELL = e.target
+  const CURRENT_CLASS = CircleTurn ? CIRCLE : CROSS
+  putMark(CELL, CURRENT_CLASS)
+  if (checkWinner(CURRENT_CLASS)) {
     endGame(false)
   } else if (Draw()) {
     endGame(true)
@@ -79,28 +86,29 @@ function handleClick(e) {
 
 function endGame(draw) {
   if (draw) {
-    Message.innerText = 'Draw!'
+    MESSAGE.innerText = 'Draw!'
   } else {
-    Message.innerHTML = `${CircleTurn ? '<i class="far fa-circle"></i>' : '<i class="fas fa-times"></i>'} wins! Congrats!`
-    Message.classList.add('result')
+    MESSAGE.innerHTML = `${CircleTurn ? '<i class="far fa-circle"></i>' : '<i class="fas fa-times"></i>'} wins! Congrats!`
+    MESSAGE.classList.add('result')
   }
 
-  Cells.forEach(Cell => {
-    Cell.removeEventListener('click', handleClick)
+  CELLS.forEach(CELL => {
+    CELL.removeEventListener('click', handleClick)
+    CELL.classList.add('nonStyle')
   })
 }
 
 
 function Draw() {
-  return [...Cells].every(Cell => {
-    return Cell.classList.contains(Cross) || Cell.classList.contains(Circle)
+  return [...CELLS].every(CELL => {
+    return CELL.classList.contains(CROSS) || CELL.classList.contains(CIRCLE)
   })
 }
 
-function checkWinner(CurrentClass) {
-  return WinningPattern.some(pattern => {
+function checkWinner(CURRENT_CLASS) {
+  return WINNING_PATTERN.some(pattern => {
     return pattern.every(index => {
-      return Cells[index].classList.contains(CurrentClass)
+      return CELLS[index].classList.contains(CURRENT_CLASS)
     })
   })
 }

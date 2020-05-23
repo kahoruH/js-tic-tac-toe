@@ -57,6 +57,9 @@ body {
             right: 17px;
             content: '×';
             font-size: 36px; }
+          .container main #board table tr td.cell.nonStyle:hover {
+            background: #fff;
+            cursor: default; }
   .container .footer .message {
     display: flex;
     align-items: center;
