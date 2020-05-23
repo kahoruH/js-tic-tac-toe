@@ -23,13 +23,6 @@ let CircleTurn = true;
 
 let Turn = 0;
 
-startGame()
-
-
-//Restart
-const RESTART_BTN = document.getElementById('js-restart')
-RESTART_BTN.addEventListener('click', startGame)
-
 
 //ボード頭上のナビ
 const BAR_CIRCLE = document.querySelector('.circle');
@@ -53,22 +46,6 @@ function chengeTurns() {
 function putMark(CELL, CURRENT_CLASS) {
   CELL.classList.add(CURRENT_CLASS)
   CELL.classList.remove('nonStyle')
-}
-
-
-function startGame() {
-
-  MESSAGE.classList.remove('result')
-  MESSAGE.innerText = 'starting...'
-
-
-
-  CELLS.forEach(CELL => {
-    CELL.classList.remove(CROSS)
-    CELL.classList.remove(CIRCLE)
-    CELL.removeEventListener('click', handleClick)
-    CELL.addEventListener('click', handleClick, { once: true })
-  })
 }
 
 function handleClick(e) {
@@ -98,7 +75,6 @@ function endGame(draw) {
   })
 }
 
-
 function Draw() {
   return [...CELLS].every(CELL => {
     return CELL.classList.contains(CROSS) || CELL.classList.contains(CIRCLE)
@@ -112,3 +88,25 @@ function checkWinner(CURRENT_CLASS) {
     })
   })
 }
+
+function startGame() {
+
+  BAR_CROSS.classList.remove('active')
+  BAR_CIRCLE.classList.add('active')
+
+  MESSAGE.classList.remove('result')
+  MESSAGE.innerText = 'starting...'
+
+  CELLS.forEach(CELL => {
+    CELL.classList.remove(CROSS)
+    CELL.classList.remove(CIRCLE)
+    CELL.removeEventListener('click', handleClick)
+    CELL.addEventListener('click', handleClick, { once: true })
+  })
+}
+
+startGame()
+
+//Restart
+const RESTART_BTN = document.getElementById('js-restart')
+RESTART_BTN.addEventListener('click', startGame)
